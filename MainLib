@@ -174,10 +174,10 @@ function Register_Font(Name, Weight, Style, Asset)
     end
 
     -- Check if font data was fetched
-    if not Asset.Font or Asset.Font == "" then
-        warn("Font data missing for " .. tostring(fontFile))
-        return nil
-    end
+if not Asset.Font or Asset.Font == "" then
+    warn("Font data missing for " .. tostring(fontFile))
+    return nil
+end
 
     -- Proceed only if valid
     if not isfile(fontFile) then
@@ -203,15 +203,30 @@ function Register_Font(Name, Weight, Style, Asset)
     return getcustomasset(outFile)
 end
         
-        local Medium = Register_Font("Medium", 200, "Normal", {
-            Id = "Medium.ttf",
-            Font = game:HttpGet("https://github.com/i77lhm/storage/raw/refs/heads/main/fonts/Inter_28pt-Medium.ttf"),
-        })
+local Medium = Register_Font("Medium", 200, "Normal", {
+    Id = "Medium.ttf",
+    Font = game:HttpGet("https://github.com/i77lhm/storage/raw/refs/heads/main/fonts/Inter_28pt-Medium.ttf")
+})
 
-        local SemiBold = Register_Font("SemiBold", 200, "Normal", {
-            Id = "SemiBold.ttf",
-            Font = game:HttpGet("https://github.com/i77lhm/storage/raw/refs/heads/main/fonts/Inter_28pt-SemiBold.ttf"),
-        })
+local SemiBold = Register_Font("SemiBold", 200, "Normal", {
+    Id = "SemiBold.ttf",
+    Font = game:HttpGet("https://github.com/i77lhm/storage/raw/refs/heads/main/fonts/Inter_28pt-SemiBold.ttf")
+})
+
+fonts = {}
+
+if Medium and SemiBold then
+    fonts = {
+        small = Font.new(Medium, Enum.FontWeight.Regular, Enum.FontStyle.Normal),
+        font = Font.new(SemiBold, Enum.FontWeight.Regular, Enum.FontStyle.Normal),
+    }
+else
+    warn("One or more fonts failed to load, using default fonts.")
+    fonts = {
+        small = Enum.Font.SourceSans,
+        font = Enum.Font.SourceSansBold,
+    }
+end
 
         fonts = {
             small = Font.new(Medium, Enum.FontWeight.Regular, Enum.FontStyle.Normal);
