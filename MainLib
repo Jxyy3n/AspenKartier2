@@ -64,6 +64,7 @@
     local find = table.find 
     local remove = table.remove
     local concat = table.concat
+print('started')
 -- 
 
 -- Library init
