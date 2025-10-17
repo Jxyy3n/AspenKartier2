@@ -163,10 +163,18 @@
     local fonts = {}; do
 function Register_Font(Name, Weight, Style, Asset)
     -- Validate file names
-    local fontFile = tostring(Asset.Id)
-    local outFile = tostring(Name) .. ".font"
-    if fontFile == "" or outFile == "" then
-        warn("Invalid file path: " .. fontFile .. " or " .. outFile)
+    local fontFile = Asset and Asset.Id or nil
+    local outFile = Name and tostring(Name) .. ".font" or nil
+
+    -- Check for missing or empty values
+    if not fontFile or not outFile or fontFile == "" or outFile == "" then
+        warn("Invalid file path: " .. tostring(fontFile) .. " or " .. tostring(outFile))
+        return nil
+    end
+
+    -- Check if font data was fetched
+    if not Asset.Font or Asset.Font == "" then
+        warn("Font data missing for " .. tostring(fontFile))
         return nil
     end
 
@@ -191,7 +199,7 @@ function Register_Font(Name, Weight, Style, Asset)
         },
     }
     writefile(outFile, http_service:JSONEncode(Data))
-    return getcustomasset(outFile);
+    return getcustomasset(outFile)
 end
         
         local Medium = Register_Font("Medium", 200, "Normal", {
